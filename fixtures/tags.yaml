@@ -1,0 +1,10 @@
+App\Entity\Tag:
+    tag_demo_vacances:
+        owner: '@user_demo'
+        name: 'vacances2026'
+    tag_demo_pro:
+        owner: '@user_demo'
+        name: 'pro'
+    tag_demo_famille:
+        owner: '@user_demo'
+        name: 'famille'

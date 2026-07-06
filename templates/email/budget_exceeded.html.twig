@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <body style="font-family: Arial, sans-serif; color: #1f2937;">
+        <h1 style="color: #B91C1C;">Budget dépassé</h1>
+        <p>Bonjour {{ user.firstName }},</p>
+        <p>
+            Votre budget <strong>{{ budget.category.name }}</strong> pour le mois de
+            {{ budget.periodStart|date('m/Y') }} est dépassé :
+        </p>
+        <p style="font-size: 18px;">
+            <strong>{{ spent|money(user.preferredCurrency) }}</strong> dépensés sur un plafond de
+            <strong>{{ budget.limitAmount|money(user.preferredCurrency) }}</strong>.
+        </p>
+        <p style="margin-top: 32px; color: #6b7280; font-size: 12px;">Cet e-mail a été envoyé automatiquement, merci de ne pas y répondre.</p>
+    </body>
+</html>

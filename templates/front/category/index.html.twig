@@ -1,0 +1,49 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Catégories - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">Catégories</h1>
+            <a href="{{ path('app_category_new') }}" class="text-sm font-semibold text-white bg-brand rounded-lg px-4 py-2 hover:bg-brandHover">+ Nouvelle catégorie</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h2 class="font-semibold text-gray-700 mb-3">Revenus</h2>
+                <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+                    {% for category in categories %}
+                        {% if category.type == 'income' %}
+                            <div class="p-3 flex items-center justify-between text-sm">
+                                <span>{{ category.icon }} {{ category.name }} {% if category.systemCategory %}<span class="text-xs text-gray-400">(système)</span>{% endif %}</span>
+                                {% if not category.systemCategory %}
+                                    <div class="flex gap-2 text-xs">
+                                        <a href="{{ path('app_category_edit', {id: category.id}) }}" class="text-gray-400 hover:text-brand"><i class="fa-solid fa-pen"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <h2 class="font-semibold text-gray-700 mb-3">Dépenses</h2>
+                <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+                    {% for category in categories %}
+                        {% if category.type == 'expense' %}
+                            <div class="p-3 flex items-center justify-between text-sm">
+                                <span>{{ category.icon }} {{ category.name }} {% if category.systemCategory %}<span class="text-xs text-gray-400">(système)</span>{% endif %}</span>
+                                {% if not category.systemCategory %}
+                                    <div class="flex gap-2 text-xs">
+                                        <a href="{{ path('app_category_edit', {id: category.id}) }}" class="text-gray-400 hover:text-brand"><i class="fa-solid fa-pen"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

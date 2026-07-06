@@ -1,0 +1,25 @@
+{% extends 'layout/admin.html.twig' %}
+{% set pageTitle = 'Utilisateurs' %}
+
+{% block title %}Utilisateurs - Administration{% endblock %}
+
+{% block content %}
+    <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+        {% for user in users %}
+            <a href="{{ path('admin_user_show', {id: user.id}) }}" class="p-4 flex items-center justify-between text-sm hover:bg-gray-50">
+                <div>
+                    <div class="font-medium">{{ user.fullName }}</div>
+                    <div class="text-xs text-gray-400">{{ user.email }}</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    {% for role in user.assignedRoles %}
+                        <span class="text-xs px-2 py-1 rounded-full bg-brand/10 text-brand font-semibold">{{ roleLabels[role]|default(role) }}</span>
+                    {% endfor %}
+                    <span class="text-xs px-2 py-1 rounded-full {{ user.status == 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700' }}">{{ user.status }}</span>
+                </div>
+            </a>
+        {% else %}
+            <div class="p-6 text-center text-gray-500 text-sm">Aucun utilisateur.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

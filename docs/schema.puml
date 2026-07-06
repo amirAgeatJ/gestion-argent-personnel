@@ -1,0 +1,206 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+' =====================================================
+' USERS & CONSEILLERS
+' =====================================================
+
+entity users {
+  *id : uuid <<PK>>
+  --
+  email : varchar
+  password_hash : varchar
+  first_name : varchar
+  last_name : varchar
+  status : varchar
+  preferred_currency : varchar
+  roles : json
+  created_at : timestamp
+}
+
+entity advisor_assignments {
+  *id : uuid <<PK>>
+  --
+  advisor_id : uuid <<FK>>
+  client_id : uuid <<FK>>
+  assigned_at : timestamp
+}
+
+' =====================================================
+' COMPTES (héritage Single Table Inheritance)
+' =====================================================
+
+entity accounts {
+  *id : uuid <<PK>>
+  --
+  type : varchar <<discriminant: checking|savings|credit_card>>
+  owner_id : uuid <<FK>>
+  name : varchar
+  currency : varchar
+  is_active : boolean
+  created_at : timestamp
+  --
+  overdraft_limit : decimal <<CheckingAccount>>
+  interest_rate : decimal <<SavingsAccount>>
+  credit_limit : decimal <<CreditCardAccount>>
+  statement_day : smallint <<CreditCardAccount>>
+}
+
+' =====================================================
+' CATEGORIES, TAGS
+' =====================================================
+
+entity categories {
+  *id : uuid <<PK>>
+  --
+  owner_id : uuid <<FK, nullable = catégorie système>>
+  parent_id : uuid <<FK, self-ref>>
+  name : varchar
+  type : varchar <<income|expense>>
+  icon : varchar
+}
+
+entity tags {
+  *id : uuid <<PK>>
+  --
+  owner_id : uuid <<FK>>
+  name : varchar
+}
+
+' =====================================================
+' TRANSACTIONS
+' =====================================================
+
+entity transactions {
+  *id : uuid <<PK>>
+  --
+  account_id : uuid <<FK>>
+  category_id : uuid <<FK, nullable>>
+  transfer_to_account_id : uuid <<FK, nullable>>
+  type : varchar <<income|expense|transfer>>
+  amount : decimal
+  converted_amount : decimal <<nullable>>
+  currency : varchar
+  description : varchar
+  occurred_at : timestamp
+  created_at : timestamp
+}
+
+entity transaction_tag {
+  *transaction_id : uuid <<FK>>
+  *tag_id : uuid <<FK>>
+}
+
+entity attachments {
+  *id : uuid <<PK>>
+  --
+  transaction_id : uuid <<FK>>
+  filename : varchar
+  path : varchar
+  mime_type : varchar
+  uploaded_at : timestamp
+}
+
+' =====================================================
+' BUDGETS, OBJECTIFS, RECURRENCES
+' =====================================================
+
+entity budgets {
+  *id : uuid <<PK>>
+  --
+  owner_id : uuid <<FK>>
+  category_id : uuid <<FK>>
+  period_start : date
+  limit_amount : decimal
+  created_at : timestamp
+}
+
+entity savings_goals {
+  *id : uuid <<PK>>
+  --
+  owner_id : uuid <<FK>>
+  account_id : uuid <<FK, nullable, SavingsAccount>>
+  name : varchar
+  target_amount : decimal
+  deadline : date
+  created_at : timestamp
+}
+
+entity recurring_transactions {
+  *id : uuid <<PK>>
+  --
+  account_id : uuid <<FK>>
+  category_id : uuid <<FK, nullable>>
+  description : varchar
+  type : varchar <<income|expense>>
+  amount : decimal
+  frequency : varchar <<weekly|monthly|yearly>>
+  next_run_date : date
+  active : boolean
+}
+
+' =====================================================
+' NOTIFICATIONS, AUDIT, TAUX DE CHANGE
+' =====================================================
+
+entity notifications {
+  *id : uuid <<PK>>
+  --
+  user_id : uuid <<FK>>
+  type : varchar
+  message : varchar
+  is_read : boolean
+  created_at : timestamp
+}
+
+entity audit_logs {
+  *id : uuid <<PK>>
+  --
+  user_id : uuid <<FK, nullable>>
+  action : varchar <<created|updated|deleted>>
+  entity_type : varchar
+  entity_id : varchar
+  metadata : json
+  created_at : timestamp
+}
+
+entity exchange_rates {
+  *id : uuid <<PK>>
+  --
+  base_currency : varchar
+  target_currency : varchar
+  rate : decimal
+  fetched_at : timestamp
+}
+
+' =====================================================
+' RELATIONS
+' =====================================================
+
+users ||--o{ accounts : "possède"
+users ||--o{ budgets : "définit"
+users ||--o{ savings_goals : "définit"
+users ||--o{ notifications : "reçoit"
+users ||--o{ audit_logs : "déclenche (nullable)"
+users ||--o{ categories : "personnalise (nullable)"
+users ||--o{ tags : "crée"
+
+users ||--o{ advisor_assignments : "conseille (advisor_id)"
+users ||--o{ advisor_assignments : "est conseillé (client_id)"
+
+accounts ||--o{ transactions : "compte source"
+accounts ||--o{ transactions : "compte destination (transferToAccount, nullable)"
+accounts ||--o{ recurring_transactions : "génère"
+accounts |o--o{ savings_goals : "alimente (nullable)"
+
+categories ||--o{ categories : "sous-catégories (self-ref)"
+categories ||--o{ transactions : "classe (nullable)"
+categories ||--o{ budgets : "budgète"
+categories ||--o{ recurring_transactions : "classe (nullable)"
+
+transactions ||--o{ attachments : "justificatifs"
+transactions }o--o{ tags : "transaction_tag"
+
+@enduml

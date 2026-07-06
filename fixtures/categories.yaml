@@ -1,0 +1,53 @@
+App\Entity\Category:
+    cat_salary:
+        name: 'Salaire'
+        type: 'income'
+        icon: '💰'
+    cat_freelance:
+        name: 'Freelance'
+        type: 'income'
+        icon: '💼'
+    cat_gifts_received:
+        name: 'Cadeaux reçus'
+        type: 'income'
+        icon: '🎁'
+
+    cat_food:
+        name: 'Alimentation'
+        type: 'expense'
+        icon: '🍽️'
+    cat_food_groceries:
+        name: 'Courses'
+        type: 'expense'
+        icon: '🛒'
+        parent: '@cat_food'
+    cat_food_restaurant:
+        name: 'Restaurants'
+        type: 'expense'
+        icon: '🍔'
+        parent: '@cat_food'
+
+    cat_housing:
+        name: 'Logement'
+        type: 'expense'
+        icon: '🏠'
+    cat_transport:
+        name: 'Transport'
+        type: 'expense'
+        icon: '🚗'
+    cat_leisure:
+        name: 'Loisirs'
+        type: 'expense'
+        icon: '🎉'
+    cat_health:
+        name: 'Santé'
+        type: 'expense'
+        icon: '🏥'
+    cat_subscriptions:
+        name: 'Abonnements'
+        type: 'expense'
+        icon: '📺'
+    cat_other_expense:
+        name: 'Autres dépenses'
+        type: 'expense'
+        icon: '❓'

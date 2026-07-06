@@ -1,0 +1,7 @@
+App\Entity\AdvisorAssignment:
+    assignment_demo:
+        advisor: '@user_advisor'
+        client: '@user_demo'
+    assignment_client2:
+        advisor: '@user_advisor'
+        client: '@user_client2'

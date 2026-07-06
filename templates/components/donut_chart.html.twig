@@ -1,0 +1,49 @@
+{#
+    Donut chart en SVG pur (sans dépendance JS type Chart.js), utilisé pour la répartition
+    des dépenses par catégorie sur le dashboard.
+
+    Variable attendue : `slices` = liste de { label, value, color } (color = couleur hex CSS).
+#}
+{% set total = 0 %}
+{% for slice in slices %}
+    {% set total = total + slice.value %}
+{% endfor %}
+
+<div class="w-full flex items-center justify-center gap-8" style="min-height: 220px;">
+    {% if total <= 0 %}
+        <div class="flex flex-col items-center gap-2 text-gray-400 py-8">
+            <i class="fa-solid fa-chart-pie text-4xl text-gray-300"></i>
+            <p class="text-sm">Aucune dépense ce mois-ci</p>
+        </div>
+    {% else %}
+        {% set radius = 70 %}
+        {% set circumference = 2 * 3.14159265 * radius %}
+        {% set cumulative = 0 %}
+
+        <svg viewBox="0 0 180 180" width="200" height="200" class="-rotate-90 shrink-0">
+            <circle cx="90" cy="90" r="{{ radius }}" fill="none" stroke="#f3f4f6" stroke-width="24" />
+            {% for slice in slices %}
+                {% if slice.value > 0 %}
+                    {% set fraction = slice.value / total %}
+                    {% set dash = fraction * circumference %}
+                    <circle cx="90" cy="90" r="{{ radius }}" fill="none" stroke="{{ slice.color }}" stroke-width="24"
+                            stroke-dasharray="{{ dash }} {{ circumference - dash }}"
+                            stroke-dashoffset="{{ -cumulative }}" />
+                    {% set cumulative = cumulative + dash %}
+                {% endif %}
+            {% endfor %}
+        </svg>
+
+        <ul class="space-y-2 text-sm">
+            {% for slice in slices %}
+                {% if slice.value > 0 %}
+                    <li class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: {{ slice.color }}"></span>
+                        <span class="text-gray-600">{{ slice.label }}</span>
+                        <span class="text-gray-400">({{ ((slice.value / total) * 100)|round }}%)</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

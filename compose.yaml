@@ -1,0 +1,59 @@
+services:
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: my-super-secret-password
+      POSTGRES_USER: app
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "app", "-U", "app"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    ports:
+      - "5440:5432"
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8090:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+    depends_on:
+      - database
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/var/www/html:rw
+      - vendor:/var/www/html/vendor
+      - var:/var/www/html/var
+    environment:
+      DATABASE_URL: postgresql://app:my-super-secret-password@database:5432/app?serverVersion=16&charset=utf8
+      MAILER_DSN: smtp://mailer:1025
+    depends_on:
+      database:
+        condition: service_healthy
+      mailer:
+        condition: service_started
+    ports:
+      - "8091:8000"
+    entrypoint: ["sh", "/var/www/html/docker/entrypoint.sh"]
+
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1026:1025" # Port SMTP
+      - "8026:8025" # Port Web UI
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  database_data:
+  vendor:
+  var:

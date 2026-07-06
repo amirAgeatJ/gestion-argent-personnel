@@ -1,0 +1,27 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Nouvelle transaction - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-md mx-auto px-4 py-8">
+        <h1 class="text-xl font-bold mb-6">Nouvelle transaction</h1>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-6">
+            {{ form_start(form, {attr: {'data-controller': 'transaction-form'}}) }}
+                {{ form_row(form.account) }}
+                {{ form_row(form.type, {attr: {'data-transaction-form-target': 'type', 'data-action': 'change->transaction-form#refresh'}}) }}
+                {{ form_row(form.category, {attr: {'data-transaction-form-target': 'category', 'data-url': path('app_transaction_categories')}}) }}
+                {{ form_row(form.transferToAccount) }}
+                {{ form_row(form.amount) }}
+                {{ form_row(form.currency) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.occurredAt) }}
+                {{ form_row(form.tags) }}
+
+                <button type="submit" class="w-full mt-2 inline-flex items-center justify-center font-semibold text-sm px-5 py-2.5 rounded-lg bg-brand text-white hover:bg-brandHover">
+                    Enregistrer
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+App\Entity\CheckingAccount:
+    account_admin_checking:
+        owner: '@user_admin'
+        name: 'Compte courant'
+        currency: 'EUR'
+        overdraftLimit: '300.00'
+    account_demo_checking:
+        owner: '@user_demo'
+        name: 'Compte courant'
+        currency: 'EUR'
+        overdraftLimit: '200.00'
+    account_client2_checking:
+        owner: '@user_client2'
+        name: 'Checking Account'
+        currency: 'USD'
+        overdraftLimit: '0.00'
+
+App\Entity\SavingsAccount:
+    account_demo_savings:
+        owner: '@user_demo'
+        name: 'Livret Épargne'
+        currency: 'EUR'
+        interestRate: '2.50'
+    account_client2_savings:
+        owner: '@user_client2'
+        name: 'Savings Account'
+        currency: 'USD'
+        interestRate: '1.80'
+
+App\Entity\CreditCardAccount:
+    account_demo_credit:
+        owner: '@user_demo'
+        name: 'Carte Visa'
+        currency: 'EUR'
+        creditLimit: '1500.00'
+        statementDay: 5

@@ -1,0 +1,24 @@
+{% extends 'layout/admin.html.twig' %}
+{% set pageTitle = 'Catégories système' %}
+
+{% block title %}Catégories système - Administration{% endblock %}
+
+{% block content %}
+    <div class="flex justify-end mb-4">
+        <a href="{{ path('admin_category_new') }}" class="text-sm font-semibold text-white bg-brand rounded-lg px-4 py-2 hover:bg-brandHover">+ Nouvelle catégorie</a>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+        {% for category in categories %}
+            <div class="p-3 flex items-center justify-between text-sm">
+                <span>{{ category.icon }} {{ category.name }} <span class="text-xs text-gray-400">({{ category.type }})</span></span>
+                <form method="post" action="{{ path('admin_category_delete', {id: category.id}) }}" onsubmit="return confirm('Supprimer cette catégorie ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                    <button class="text-gray-400 hover:text-expense"><i class="fa-solid fa-trash"></i></button>
+                </form>
+            </div>
+        {% else %}
+            <div class="p-6 text-center text-gray-500 text-sm">Aucune catégorie système.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

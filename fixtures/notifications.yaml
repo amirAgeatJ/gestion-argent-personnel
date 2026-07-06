@@ -1,0 +1,11 @@
+App\Entity\Notification:
+    notif_demo_welcome:
+        user: '@user_demo'
+        type: 'system'
+        message: 'Bienvenue sur Gestion Argent Personnel !'
+        isRead: true
+    notif_demo_goal:
+        user: '@user_demo'
+        type: 'goal_reached'
+        message: "Votre objectif d'épargne progresse bien, continuez ainsi !"
+        isRead: false

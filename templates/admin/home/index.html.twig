@@ -1,0 +1,36 @@
+{% extends 'layout/admin.html.twig' %}
+{% set pageTitle = 'Tableau de bord' %}
+
+{% block title %}Administration - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <div class="text-xs uppercase tracking-wide text-gray-500">Utilisateurs</div>
+            <div class="text-3xl font-bold mt-1">{{ userCount }}</div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <div class="text-xs uppercase tracking-wide text-gray-500">Comptes</div>
+            <div class="text-3xl font-bold mt-1">{{ accountCount }}</div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <div class="text-xs uppercase tracking-wide text-gray-500">Transactions</div>
+            <div class="text-3xl font-bold mt-1">{{ transactionCount }}</div>
+        </div>
+    </div>
+
+    <h2 class="font-semibold text-gray-700 mb-3">Journal d'audit récent</h2>
+    <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+        {% for log in recentAuditLogs %}
+            <div class="p-3 text-sm flex justify-between">
+                <span>
+                    <strong>{{ log.action }}</strong> sur {{ log.entityType }}
+                    {% if log.user %} par {{ log.user.fullName }}{% endif %}
+                </span>
+                <span class="text-gray-400 text-xs">{{ log.createdAt|date('d/m/Y H:i') }}</span>
+            </div>
+        {% else %}
+            <div class="p-6 text-center text-gray-500 text-sm">Aucune activité enregistrée.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

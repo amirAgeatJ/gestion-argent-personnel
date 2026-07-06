@@ -1,0 +1,18 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Modifier le budget - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-md mx-auto px-4 py-8">
+        <h1 class="text-xl font-bold mb-6">Modifier le budget</h1>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-6">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="w-full mt-2 inline-flex items-center justify-center font-semibold text-sm px-5 py-2.5 rounded-lg bg-brand text-white hover:bg-brandHover">
+                    Enregistrer
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

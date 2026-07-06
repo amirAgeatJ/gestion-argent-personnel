@@ -1,0 +1,109 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Dashboard - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold mb-1">Dashboard</h1>
+        <p class="text-gray-500 mb-8">Bonjour {{ app.user.firstName }}, voici l'aperçu de vos finances.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                    <i class="fa-solid fa-wallet text-brand"></i> Solde total
+                </div>
+                <div class="text-3xl font-bold {{ totalBalance < 0 ? 'text-expense' : 'text-brand' }}">
+                    {{ totalBalance|money(displayCurrency) }}
+                </div>
+                <hr class="my-3 border-gray-100">
+                <p class="text-xs text-gray-400">Tous comptes confondus, en {{ displayCurrency }}</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                    <i class="fa-solid fa-arrow-trend-down text-expense"></i> Total dépenses
+                </div>
+                <div class="text-3xl font-bold text-expense">-{{ totalExpenses|money(displayCurrency) }}</div>
+                <hr class="my-3 border-gray-100">
+                <p class="text-xs text-gray-400">Toutes catégories, ce mois-ci</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                    <i class="fa-solid fa-arrow-trend-up text-income"></i> Total revenus
+                </div>
+                <div class="text-3xl font-bold text-income">+{{ totalIncome|money(displayCurrency) }}</div>
+                <hr class="my-3 border-gray-100">
+                <p class="text-xs text-gray-400">Toutes catégories, ce mois-ci</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <h2 class="font-semibold text-gray-700 mb-4">Répartition des dépenses</h2>
+                {% include 'components/donut_chart.html.twig' with { slices: chartSlices } %}
+                <a href="{{ path('app_budget_index') }}" class="text-sm font-semibold text-brand mt-2 inline-block">Gérer les budgets &rarr;</a>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <h2 class="font-semibold text-gray-700 mb-4">Transactions récentes</h2>
+                <div class="divide-y divide-gray-100">
+                    {% for transaction in recentTransactions %}
+                        <div class="py-3 flex items-center justify-between text-sm">
+                            <div>
+                                <div class="font-medium">{{ transaction.description ?: (transaction.category ? transaction.category.name : 'Virement') }}</div>
+                                <div class="text-xs text-gray-400">{{ transaction.occurredAt|date('d/m/Y') }}</div>
+                            </div>
+                            <div class="{{ transaction.type == 'income' ? 'text-income' : (transaction.type == 'expense' ? 'text-expense' : 'text-gray-600') }} font-semibold">
+                                {{ transaction.type == 'transfer' ? transaction.amount|money(transaction.currency) : transaction.amount|signed_money(transaction.type, transaction.currency) }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="flex flex-col items-center gap-2 text-gray-400 py-10">
+                            <i class="fa-solid fa-clipboard-list text-4xl text-gray-300"></i>
+                            <p class="text-sm">Aucune transaction ce mois-ci.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ path('app_transaction_index') }}" class="text-sm font-semibold text-brand mt-2 inline-block">Voir toutes les transactions &rarr;</a>
+            </div>
+        </div>
+
+        <h2 class="font-semibold text-gray-700 mb-3">Mes comptes</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {% for entry in accounts %}
+                <a href="{{ path('app_account_show', {id: entry.account.id}) }}" class="block bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+                    <div class="text-xs uppercase tracking-wide text-gray-500">{{ entry.account.typeLabel }}</div>
+                    <div class="font-semibold text-gray-800">{{ entry.account.name }}</div>
+                    <div class="text-2xl font-bold mt-2 {{ entry.balance < 0 ? 'text-expense' : 'text-gray-900' }}">
+                        {{ entry.balance|money(entry.account.currency) }}
+                    </div>
+                </a>
+            {% else %}
+                <div class="col-span-3 text-center py-10 bg-white rounded-2xl border border-dashed border-gray-300 text-gray-500">
+                    Vous n'avez encore aucun compte.
+                    <a href="{{ path('app_account_new', {type: 'checking'}) }}" class="text-brand font-semibold">Créer votre premier compte</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="font-semibold text-gray-700 mb-3">Budgets du mois</h2>
+        <div class="bg-white rounded-2xl divide-y divide-gray-100 shadow-sm">
+            {% for entry in budgets %}
+                {% set percent = entry.budget.limitAmount > 0 ? (entry.spent / entry.budget.limitAmount * 100)|round : 0 %}
+                <div class="p-4">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="font-medium">{{ entry.budget.category.name }}</span>
+                        <span class="{{ percent >= 100 ? 'text-expense font-semibold' : 'text-gray-500' }}">
+                            {{ entry.spent|money() }} / {{ entry.budget.limitAmount|money() }}
+                        </span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="h-2 rounded-full {{ percent >= 100 ? 'bg-expense' : 'bg-brand' }}" style="width: {{ percent > 100 ? 100 : percent }}%"></div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-6 text-center text-gray-500 text-sm">
+                    Aucun budget défini pour ce mois. <a href="{{ path('app_budget_new') }}" class="text-brand font-semibold">Créer un budget</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

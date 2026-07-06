@@ -1,0 +1,42 @@
+App\Entity\User:
+    user_admin:
+        email: 'admin@gestion-argent.test'
+        passwordHash: '<hashedPassword("password")>'
+        firstName: 'Alice'
+        lastName: 'Admin'
+        status: 'active'
+        preferredCurrency: 'EUR'
+        assignedRoles: ['ROLE_ADMIN']
+
+    user_advisor:
+        email: 'conseiller@gestion-argent.test'
+        passwordHash: '<hashedPassword("password")>'
+        firstName: 'Bruno'
+        lastName: 'Conseiller'
+        status: 'active'
+        preferredCurrency: 'EUR'
+        assignedRoles: ['ROLE_ADVISOR']
+
+    user_demo:
+        email: 'user@gestion-argent.test'
+        passwordHash: '<hashedPassword("password")>'
+        firstName: 'Chloé'
+        lastName: 'Utilisatrice'
+        status: 'active'
+        preferredCurrency: 'EUR'
+
+    user_client2:
+        email: 'client2@gestion-argent.test'
+        passwordHash: '<hashedPassword("password")>'
+        firstName: 'David'
+        lastName: 'Client'
+        status: 'active'
+        preferredCurrency: 'USD'
+
+    user_other_{1..5}:
+        email: '<safeEmail()>'
+        passwordHash: '<hashedPassword("password")>'
+        firstName: '<firstName()>'
+        lastName: '<lastName()>'
+        status: 'active'
+        preferredCurrency: 'EUR'

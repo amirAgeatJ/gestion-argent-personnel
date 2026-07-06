@@ -1,0 +1,19 @@
+App\Entity\RecurringTransaction:
+    recurring_demo_rent:
+        account: '@account_demo_checking'
+        category: '@cat_housing'
+        description: 'Loyer'
+        type: 'expense'
+        amount: '750.00'
+        frequency: 'monthly'
+        nextRunDate: '<(new \DateTimeImmutable("2026-08-01"))>'
+        active: true
+    recurring_demo_subscription:
+        account: '@account_demo_checking'
+        category: '@cat_subscriptions'
+        description: 'Abonnement streaming'
+        type: 'expense'
+        amount: '15.99'
+        frequency: 'monthly'
+        nextRunDate: '<(new \DateTimeImmutable("2026-08-05"))>'
+        active: true

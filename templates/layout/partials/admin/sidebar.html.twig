@@ -1,0 +1,25 @@
+<aside class="w-64 bg-gray-900 text-gray-300 flex-shrink-0 hidden md:flex flex-col">
+    <div class="h-16 flex items-center px-6 font-bold text-white border-b border-gray-800">
+        <i class="fa-solid fa-piggy-bank mr-2"></i> Administration
+    </div>
+    <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+        <a href="{{ path('admin_home') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white {{ app.request.attributes.get('_route') == 'admin_home' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-gauge w-5"></i> Tableau de bord
+        </a>
+        <a href="{{ path('admin_user_index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white {{ app.request.attributes.get('_route') starts with 'admin_user' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-users w-5"></i> Utilisateurs
+        </a>
+        <a href="{{ path('admin_category_index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white {{ app.request.attributes.get('_route') starts with 'admin_category' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-tags w-5"></i> Catégories système
+        </a>
+        <a href="{{ path('admin_advisor_assignment_index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white {{ app.request.attributes.get('_route') starts with 'admin_advisor' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-user-tie w-5"></i> Conseillers
+        </a>
+        <a href="{{ path('admin_audit_log_index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white {{ app.request.attributes.get('_route') starts with 'admin_audit' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-clock-rotate-left w-5"></i> Journal d'audit
+        </a>
+        <a href="{{ path('app_dashboard') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white mt-6 text-gray-500">
+            <i class="fa-solid fa-arrow-left w-5"></i> Retour à l'application
+        </a>
+    </nav>
+</aside>

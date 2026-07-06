@@ -1,0 +1,38 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}{{ account.name }} - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="text-xs uppercase tracking-wide text-gray-500">{{ account.typeLabel }}</div>
+                <h1 class="text-2xl font-bold">{{ account.name }}</h1>
+            </div>
+            <div class="flex gap-2">
+                <a href="{{ path('app_account_edit', {id: account.id}) }}" class="text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50">Modifier</a>
+                <form method="post" action="{{ path('app_account_delete', {id: account.id}) }}" onsubmit="return confirm('Supprimer ce compte et toutes ses transactions ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ account.id) }}">
+                    <button class="text-sm font-semibold text-expense border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50">Supprimer</button>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="font-semibold text-gray-700 mb-3">Transactions</h2>
+        <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+            {% for transaction in transactions %}
+                <div class="p-4 flex items-center justify-between text-sm">
+                    <div>
+                        <div class="font-medium">{{ transaction.description ?: (transaction.category ? transaction.category.name : 'Virement') }}</div>
+                        <div class="text-xs text-gray-400">{{ transaction.occurredAt|date('d/m/Y') }}</div>
+                    </div>
+                    <div class="{{ transaction.type == 'income' ? 'text-income' : (transaction.type == 'expense' ? 'text-expense' : 'text-gray-600') }} font-semibold">
+                        {{ transaction.type == 'transfer' ? transaction.amount|money(transaction.currency) : transaction.amount|signed_money(transaction.type, transaction.currency) }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-6 text-center text-gray-500 text-sm">Aucune transaction pour ce compte.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 hidden md:flex flex-col">
+    <div class="h-16 flex items-center gap-2 px-6 font-bold text-lg text-gray-800 border-b border-gray-100">
+        <i class="fa-solid fa-piggy-bank text-brand"></i>
+        Gestion Argent
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-1 text-sm font-semibold">
+        <a href="{{ path('app_dashboard') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute == 'app_dashboard' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-grip w-5"></i> Dashboard
+        </a>
+        <a href="{{ path('app_account_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_account' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-building-columns w-5"></i> Comptes
+        </a>
+        <a href="{{ path('app_transaction_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_transaction' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-right-left w-5"></i> Transactions
+        </a>
+        <a href="{{ path('app_budget_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_budget' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-wallet w-5"></i> Budget
+        </a>
+        <a href="{{ path('app_savings_goal_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_savings_goal' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-bullseye w-5"></i> Objectifs
+        </a>
+        <a href="{{ path('app_recurring_transaction_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_recurring_transaction' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-rotate w-5"></i> Récurrentes
+        </a>
+        <a href="{{ path('app_category_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_category' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-tags w-5"></i> Catégories
+        </a>
+        <a href="{{ path('app_notification_index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_notification' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="fa-solid fa-bell w-5"></i> Notifications
+        </a>
+
+        {% if is_granted('ROLE_ADVISOR') %}
+            <a href="{{ path('app_advisor_index') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'app_advisor' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+                <i class="fa-solid fa-user-tie w-5"></i> Mes clients
+            </a>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_home') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ currentRoute starts with 'admin_' ? 'bg-brand/10 text-brand' : 'text-gray-600 hover:bg-gray-50' }}">
+                <i class="fa-solid fa-shield-halved w-5"></i> Administration
+            </a>
+        {% endif %}
+    </nav>
+</aside>

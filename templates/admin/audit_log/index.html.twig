@@ -1,0 +1,20 @@
+{% extends 'layout/admin.html.twig' %}
+{% set pageTitle = "Journal d'audit" %}
+
+{% block title %}Journal d'audit - Administration{% endblock %}
+
+{% block content %}
+    <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+        {% for log in logs %}
+            <div class="p-3 text-sm flex justify-between">
+                <span>
+                    <strong>{{ log.action }}</strong> sur {{ log.entityType }} ({{ log.entityId }})
+                    {% if log.user %} par {{ log.user.fullName }}{% endif %}
+                </span>
+                <span class="text-gray-400 text-xs">{{ log.createdAt|date('d/m/Y H:i') }}</span>
+            </div>
+        {% else %}
+            <div class="p-6 text-center text-gray-500 text-sm">Aucune activité enregistrée.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

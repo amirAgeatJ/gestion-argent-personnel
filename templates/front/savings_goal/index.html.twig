@@ -1,0 +1,40 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Objectifs d'épargne - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">Objectifs d'épargne</h1>
+            <a href="{{ path('app_savings_goal_new') }}" class="text-sm font-semibold text-white bg-brand rounded-lg px-4 py-2 hover:bg-brandHover">+ Nouvel objectif</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for goal in goals %}
+                <div class="bg-white border border-gray-200 rounded-xl p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="font-semibold">{{ goal.name }}</div>
+                        <div class="flex gap-2 text-xs">
+                            <a href="{{ path('app_savings_goal_edit', {id: goal.id}) }}" class="text-gray-400 hover:text-brand"><i class="fa-solid fa-pen"></i></a>
+                            <form method="post" action="{{ path('app_savings_goal_delete', {id: goal.id}) }}" onsubmit="return confirm('Supprimer cet objectif ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ goal.id) }}">
+                                <button class="text-gray-400 hover:text-expense"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-brand">{{ goal.targetAmount|money(goal.account ? goal.account.currency : 'EUR') }}</div>
+                    {% if goal.deadline %}
+                        <div class="text-xs text-gray-400 mt-1">Échéance : {{ goal.deadline|date('d/m/Y') }}</div>
+                    {% endif %}
+                    {% if goal.account %}
+                        <div class="text-xs text-gray-400">Compte associé : {{ goal.account.name }}</div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="col-span-2 text-center py-10 bg-white border border-dashed border-gray-300 rounded-xl text-gray-500">
+                    Aucun objectif d'épargne pour le moment.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

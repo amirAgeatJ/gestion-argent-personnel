@@ -1,0 +1,15 @@
+{% extends 'layout/admin.html.twig' %}
+{% set pageTitle = 'Nouvelle assignation' %}
+
+{% block title %}Nouvelle assignation - Administration{% endblock %}
+
+{% block content %}
+    <div class="max-w-md bg-white border border-gray-200 rounded-xl p-6">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="w-full mt-2 inline-flex items-center justify-center font-semibold text-sm px-5 py-2.5 rounded-lg bg-brand text-white hover:bg-brandHover">
+                Assigner
+            </button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

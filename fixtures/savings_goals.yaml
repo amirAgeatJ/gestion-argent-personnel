@@ -1,0 +1,13 @@
+App\Entity\SavingsGoal:
+    goal_demo_voyage:
+        owner: '@user_demo'
+        account: '@account_demo_savings'
+        name: 'Voyage au Japon'
+        targetAmount: '3000.00'
+        deadline: '<(new \DateTimeImmutable("2027-04-01"))>'
+    goal_demo_urgence:
+        owner: '@user_demo'
+        account: '@account_demo_savings'
+        name: "Fonds d'urgence"
+        targetAmount: '5000.00'
+        deadline: null

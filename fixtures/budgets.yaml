@@ -1,0 +1,16 @@
+App\Entity\Budget:
+    budget_demo_groceries:
+        owner: '@user_demo'
+        category: '@cat_food_groceries'
+        periodStart: '<(new \DateTimeImmutable("2026-07-01"))>'
+        limitAmount: '400.00'
+    budget_demo_leisure:
+        owner: '@user_demo'
+        category: '@cat_leisure'
+        periodStart: '<(new \DateTimeImmutable("2026-07-01"))>'
+        limitAmount: '150.00'
+    budget_demo_transport:
+        owner: '@user_demo'
+        category: '@cat_transport'
+        periodStart: '<(new \DateTimeImmutable("2026-07-01"))>'
+        limitAmount: '100.00'

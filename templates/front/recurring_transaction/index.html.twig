@@ -1,0 +1,40 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Transactions récurrentes - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">Transactions récurrentes</h1>
+            <a href="{{ path('app_recurring_transaction_new') }}" class="text-sm font-semibold text-white bg-brand rounded-lg px-4 py-2 hover:bg-brandHover">+ Nouvelle</a>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+            {% for recurring in recurringTransactions %}
+                <div class="p-4 flex items-center justify-between text-sm">
+                    <div>
+                        <div class="font-medium">
+                            {{ recurring.description ?: (recurring.category ? recurring.category.name : 'Sans catégorie') }}
+                            {% if not recurring.active %}<span class="text-xs text-gray-400">(inactive)</span>{% endif %}
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            {{ recurring.account.name }} · {{ recurring.frequency }} · prochaine échéance {{ recurring.nextRunDate|date('d/m/Y') }}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="{{ recurring.type == 'income' ? 'text-income' : 'text-expense' }} font-semibold">
+                            {{ recurring.amount|signed_money(recurring.type) }}
+                        </div>
+                        <a href="{{ path('app_recurring_transaction_edit', {id: recurring.id}) }}" class="text-gray-400 hover:text-brand"><i class="fa-solid fa-pen"></i></a>
+                        <form method="post" action="{{ path('app_recurring_transaction_delete', {id: recurring.id}) }}" onsubmit="return confirm('Supprimer cette transaction récurrente ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recurring.id) }}">
+                            <button class="text-gray-400 hover:text-expense"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-6 text-center text-gray-500 text-sm">Aucune transaction récurrente.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

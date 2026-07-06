@@ -1,0 +1,54 @@
+{% extends 'layout/app.html.twig' %}
+
+{% block title %}Transactions - Gestion Argent Personnel{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">Transactions</h1>
+            <a href="{{ path('app_transaction_new') }}" class="text-sm font-semibold text-white bg-brand rounded-lg px-4 py-2 hover:bg-brandHover">+ Nouvelle transaction</a>
+        </div>
+
+        <form method="get" class="flex items-center gap-3 mb-4">
+            <select name="type" onchange="this.form.submit()"
+                    class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                <option value="" {{ selectedType == '' ? 'selected' : '' }}>Tous les types</option>
+                <option value="income" {{ selectedType == 'income' ? 'selected' : '' }}>Revenus</option>
+                <option value="expense" {{ selectedType == 'expense' ? 'selected' : '' }}>Dépenses</option>
+                <option value="transfer" {{ selectedType == 'transfer' ? 'selected' : '' }}>Virements</option>
+            </select>
+            <select name="category" onchange="this.form.submit()"
+                    class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                <option value="" {{ selectedCategory == '' ? 'selected' : '' }}>Toutes les catégories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {{ selectedCategory == category.id ? 'selected' : '' }}>{{ category.icon }} {{ category.name }}</option>
+                {% endfor %}
+            </select>
+            {% if selectedType != '' or selectedCategory != '' %}
+                <a href="{{ path('app_transaction_index') }}" class="text-sm text-gray-400 hover:text-brand">Réinitialiser</a>
+            {% endif %}
+        </form>
+
+        <div class="bg-white rounded-2xl shadow-sm divide-y divide-gray-100">
+            {% for transaction in transactions %}
+                <div class="p-4 flex items-center justify-between text-sm">
+                    <div>
+                        <div class="font-medium">{{ transaction.description ?: (transaction.category ? transaction.category.name : 'Virement') }}</div>
+                        <div class="text-xs text-gray-400">
+                            {{ transaction.account.name }} · {{ transaction.occurredAt|date('d/m/Y') }}
+                            {% for tag in transaction.tags %}<span class="ml-1 px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">#{{ tag.name }}</span>{% endfor %}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="{{ transaction.type == 'income' ? 'text-income' : (transaction.type == 'expense' ? 'text-expense' : 'text-gray-600') }} font-semibold">
+                            {{ transaction.type == 'transfer' ? transaction.amount|money(transaction.currency) : transaction.amount|signed_money(transaction.type, transaction.currency) }}
+                        </div>
+                        <a href="{{ path('app_transaction_edit', {id: transaction.id}) }}" class="text-gray-400 hover:text-brand"><i class="fa-solid fa-pen"></i></a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-6 text-center text-gray-500 text-sm">Aucune transaction ne correspond à ces filtres.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
