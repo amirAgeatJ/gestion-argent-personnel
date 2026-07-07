@@ -12,10 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Endpoint API dédié (hors ressources auto-générées par API Platform) exposant la
- * conversion de devises, avec sérialisation explicite via des Groupes/Context.
- */
+
 final class CurrencyConversionController
 {
     public function __construct(

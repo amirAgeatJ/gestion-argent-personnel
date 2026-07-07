@@ -7,7 +7,7 @@
         <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
             <h1 class="text-xl font-bold mb-6">Créer un compte</h1>
 
-            {{ form_start(form) }}
+            {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
                 {{ form_row(form.firstName) }}
                 {{ form_row(form.lastName) }}
                 {{ form_row(form.email) }}
