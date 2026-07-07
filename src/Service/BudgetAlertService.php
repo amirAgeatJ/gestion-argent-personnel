@@ -6,12 +6,13 @@ namespace App\Service;
 
 use App\Entity\Notification;
 use App\Entity\User;
+use App\Notifier\BudgetExceededNotification;
 use App\Repository\BudgetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Notifier\Notification\Notification as SymfonyNotification;
-use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Notifier;
 
 class BudgetAlertService
 {
@@ -19,7 +20,8 @@ class BudgetAlertService
         private readonly BudgetRepository $budgetRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer,
-        private readonly NotifierInterface $notifier,
+        #[Autowire(service: 'notifier')]
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -52,10 +54,13 @@ class BudgetAlertService
                 ->context(['user' => $user, 'budget' => $budget, 'spent' => $spent]);
             $this->mailer->send($email);
 
-            $this->notifier->send(new SymfonyNotification(
-                sprintf('Budget dépassé pour %s : catégorie "%s"', $user->getEmail(), $budget->getCategory()->getName()),
-                ['email'],
-            ));
+            $this->notifier->send(
+                new BudgetExceededNotification(
+                    sprintf('Budget dépassé pour %s : catégorie "%s"', $user->getEmail(), $budget->getCategory()->getName()),
+                    ['email'],
+                ),
+                ...$this->notifier->getAdminRecipients(),
+            );
         }
     }
 }
