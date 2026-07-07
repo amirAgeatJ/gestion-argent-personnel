@@ -33,7 +33,6 @@ class AdvisorAssignmentRepository extends ServiceEntityRepository
         return (int) $count > 0;
     }
 
-    /** Clients assignés à un conseiller, avec l'utilisateur préchargé (pas de N+1). */
     public function findClientsForAdvisor(User $advisor): array
     {
         return $this->createQueryBuilder('aa')

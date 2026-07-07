@@ -7,11 +7,7 @@ namespace App\Faker;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * Fournisseur Faker personnalisé pour Alice/hautelook-fixtures : permet d'écrire
- * `passwordHash: '<hashedPassword("password")>'` dans les fichiers YAML et d'obtenir
- * un vrai hash (et non une chaîne aléatoire), pour que les comptes de test puissent se connecter.
- */
+
 final class PasswordFakerProvider
 {
     public function __construct(

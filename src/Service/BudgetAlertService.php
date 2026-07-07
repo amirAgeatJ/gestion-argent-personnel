@@ -13,11 +13,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Notifier\Notification\Notification as SymfonyNotification;
 use Symfony\Component\Notifier\NotifierInterface;
 
-/**
- * Vérifie les budgets du mois en cours pour un utilisateur et, pour chaque budget dépassé,
- * crée une notification interne, envoie un e-mail (Mailer) à l'utilisateur et alerte les
- * administrateurs via le composant Notifier.
- */
 class BudgetAlertService
 {
     public function __construct(

@@ -19,7 +19,6 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, \App\Entity\Transaction::class);
     }
 
-    /** Transactions d'un compte, avec catégorie et étiquettes préchargées (pas de N+1). */
     public function findForAccountWithCategoryAndTags(Account $account): array
     {
         return $this->createQueryBuilder('t')
@@ -33,10 +32,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * Transactions d'un utilisateur (tous comptes confondus), avec compte, catégorie et
-     * étiquettes préchargés en une seule requête, filtrables par type et par catégorie.
-     */
     public function findAllForUserWithFilters(User $user, ?string $type = null, ?string $categoryId = null): array
     {
         $qb = $this->createQueryBuilder('t')
@@ -59,11 +54,7 @@ class TransactionRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * Transactions d'un utilisateur (tous comptes confondus) sur une période, avec compte et
-     * catégorie préchargés en une seule requête (utilisé par le dashboard : totaux, répartition
-     * par catégorie et transactions récentes).
-     */
+   
     public function findForUserInPeriod(User $user, \DateTimeImmutable $start, \DateTimeImmutable $end): array
     {
         return $this->createQueryBuilder('t')
@@ -81,11 +72,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * Total dépensé par catégorie sur une période, pour un utilisateur (utilisé par les budgets).
-     *
-     * @return array<string, string> categoryId => somme dépensée
-     */
+    /** @return array<string, string> categoryId => somme dépensée */
     public function sumExpensesByCategoryForUser(User $user, \DateTimeImmutable $periodStart, \DateTimeImmutable $periodEnd): array
     {
         $rows = $this->createQueryBuilder('t')

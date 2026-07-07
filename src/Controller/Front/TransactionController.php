@@ -42,11 +42,6 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    /**
-     * Alimente dynamiquement le select "catégorie" en fonction du type choisi par l'utilisateur
-     * (revenu/dépense), sans recharger la page — complète le filtrage serveur fait dans
-     * TransactionType via les Form Events (PRE_SET_DATA/PRE_SUBMIT), qui reste la source de vérité.
-     */
     #[Route('/categories.json', name: 'app_transaction_categories', methods: ['GET'])]
     public function categories(Request $request, CategoryRepository $categoryRepository): JsonResponse
     {

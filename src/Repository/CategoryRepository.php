@@ -19,7 +19,6 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    /** Catégories système + catégories personnalisées de l'utilisateur, triées pour un select. */
     public function findAvailableForUser(User $user, ?string $type = null): array
     {
         $qb = $this->createQueryBuilder('c')

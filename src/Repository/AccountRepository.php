@@ -19,12 +19,7 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    /**
-     * Comptes actifs d'un utilisateur avec leur solde calculé, sans requête N+1
-     * (2 requêtes d'agrégation au total, quel que soit le nombre de comptes).
-     *
-     * @return list<array{account: Account, balance: string}>
-     */
+    /** @return list<array{account: Account, balance: string}> */
     public function findAllForUserWithBalances(User $user): array
     {
         $accounts = $this->createQueryBuilder('a')

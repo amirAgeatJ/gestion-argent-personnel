@@ -22,11 +22,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-/**
- * Formulaire dynamique : la liste des catégories proposées dépend du type de transaction
- * choisi (revenu/dépense), et est recalculée à la soumission via les Form Events
- * (PRE_SET_DATA pour l'affichage initial, PRE_SUBMIT si l'utilisateur change le type).
- */
 class TransactionType extends AbstractType
 {
     public function __construct(

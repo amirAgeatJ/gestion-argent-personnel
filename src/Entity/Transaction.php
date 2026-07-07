@@ -69,11 +69,6 @@ class Transaction
     #[ORM\Column(length: 3)]
     private string $currency = 'EUR';
 
-    /**
-     * Montant réellement crédité sur le compte de destination d'un virement, dans la devise
-     * de ce compte, lorsqu'elle diffère de la devise source (calculé par TransferService via
-     * ExchangeRateProvider). Null pour les transactions simples ou les virements sans conversion.
-     */
     #[Groups(['transaction:read'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $convertedAmount = null;

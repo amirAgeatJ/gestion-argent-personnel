@@ -16,14 +16,6 @@ use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Bundle\SecurityBundle\Security;
 
-/**
- * Trace la création/modification/suppression des comptes et transactions dans AuditLog.
- *
- * Doctrine ne permet pas de persister+flush une nouvelle entité directement dans
- * postPersist/postUpdate/postRemove (le UnitOfWork est déjà en cours de traitement) : on
- * bufferise donc les entrées et on ne les écrit qu'à postFlush, une fois le flush principal
- * terminé — c'est le pattern documenté par Doctrine pour ce cas d'usage.
- */
 #[AsDoctrineListener(event: Events::postPersist)]
 #[AsDoctrineListener(event: Events::postUpdate)]
 #[AsDoctrineListener(event: Events::postRemove)]

@@ -117,6 +117,5 @@ abstract class Account
         return $this->createdAt;
     }
 
-    /** Discriminant lisible pour l'UI, ex. "Compte courant". */
     abstract public function getTypeLabel(): string;
 }

@@ -10,11 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * Fournit des taux de change en s'appuyant sur l'API externe Frankfurter
- * (https://api.frankfurter.app, gratuite, sans clé), avec un cache "read-through"
- * en base (ExchangeRate) rafraîchi au bout de 24h pour éviter d'appeler l'API à chaque requête.
- */
 class ExchangeRateProvider
 {
     private const string API_BASE_URL = 'https://api.frankfurter.app';
@@ -27,7 +22,6 @@ class ExchangeRateProvider
     ) {
     }
 
-    /** Retourne le taux de conversion de $base vers $target (1 unité de $base = X unités de $target). */
     public function getRate(string $base, string $target): string
     {
         if ($base === $target) {

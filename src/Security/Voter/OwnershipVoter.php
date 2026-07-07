@@ -10,10 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-/**
- * Voter générique pour toute entité "possédée" par un utilisateur
- * (Budget, SavingsGoal, RecurringTransaction) : seul le propriétaire ou un admin y accède.
- */
+
 final class OwnershipVoter extends Voter
 {
     public const string VIEW = 'OWNERSHIP_VIEW';

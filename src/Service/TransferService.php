@@ -6,10 +6,6 @@ namespace App\Service;
 
 use App\Entity\Transaction;
 
-/**
- * Calcule, côté serveur, le montant converti d'un virement entre deux comptes de devises
- * différentes — on ne fait jamais confiance à un montant converti envoyé par le client.
- */
 class TransferService
 {
     public function __construct(

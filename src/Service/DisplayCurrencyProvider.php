@@ -6,10 +6,6 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Devise d'affichage choisie par l'utilisateur via le sélecteur de la topbar (stockée en
- * session, ne modifie jamais les montants stockés ni la devise réelle des comptes).
- */
 class DisplayCurrencyProvider
 {
     public const array SUPPORTED = ['EUR', 'USD', 'GBP', 'CHF'];

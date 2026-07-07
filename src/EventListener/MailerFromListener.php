@@ -9,10 +9,6 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Email;
 
-/**
- * Renseigne automatiquement l'en-tête "From" de tous les emails envoyés par l'application,
- * sans avoir à le répéter dans chaque service (RegisterController, BudgetAlertService, ...).
- */
 #[AsEventListener(event: MessageEvent::class)]
 final class MailerFromListener
 {

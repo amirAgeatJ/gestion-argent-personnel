@@ -10,10 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-/**
- * Les catégories système (owner = null) ne sont modifiables que par un admin ;
- * les catégories personnalisées, uniquement par leur créateur.
- */
+
 final class CategoryVoter extends Voter
 {
     public const string EDIT = 'CATEGORY_EDIT';

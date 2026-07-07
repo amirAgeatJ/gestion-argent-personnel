@@ -41,7 +41,6 @@ final class AppExtension extends AbstractExtension
         return $formatter->formatCurrency((float) ($amount ?? 0), $currency);
     }
 
-    /** Formate un montant avec un signe +/- explicite, utile pour les transactions revenu/dépense. */
     public function formatSignedMoney(string|float|null $amount, string $type, string $currency = 'EUR'): string
     {
         $value = (float) ($amount ?? 0);
@@ -54,10 +53,6 @@ final class AppExtension extends AbstractExtension
         return $sign.' '.$this->formatMoney(abs($value), $currency);
     }
 
-    /**
-     * Convertit un montant de sa devise d'origine vers la devise d'affichage choisie par
-     * l'utilisateur (sélecteur de la topbar), sans jamais modifier la donnée stockée.
-     */
     public function formatInDisplayCurrency(string|float|null $amount, string $fromCurrency): string
     {
         $displayCurrency = $this->displayCurrencyProvider->getCurrency();

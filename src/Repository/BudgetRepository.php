@@ -21,12 +21,7 @@ class BudgetRepository extends ServiceEntityRepository
         parent::__construct($registry, Budget::class);
     }
 
-    /**
-     * Budgets d'un utilisateur pour un mois donné, avec le montant déjà dépensé
-     * (une seule requête d'agrégation pour tous les budgets, pas une par budget).
-     *
-     * @return list<array{budget: Budget, spent: string}>
-     */
+    /** @return list<array{budget: Budget, spent: string}> */
     public function findWithSpentAmountForUser(User $user, \DateTimeImmutable $periodStart): array
     {
         $budgets = $this->createQueryBuilder('b')

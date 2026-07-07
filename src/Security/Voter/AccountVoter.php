@@ -11,10 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-/**
- * Un compte n'est visible/modifiable que par son propriétaire (tout droit), par un
- * conseiller qui lui est explicitement assigné (lecture seule), ou par un administrateur.
- */
+
 final class AccountVoter extends Voter
 {
     public const string VIEW = 'ACCOUNT_VIEW';
