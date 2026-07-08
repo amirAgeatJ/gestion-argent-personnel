@@ -7,9 +7,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
+
 final class Version20260706074629 extends AbstractMigration
 {
     public function getDescription(): string
@@ -19,7 +17,6 @@ final class Version20260706074629 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE accounts (name VARCHAR(100) NOT NULL, currency VARCHAR(3) NOT NULL, is_active BOOLEAN NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, id UUID NOT NULL, owner_id UUID NOT NULL, type VARCHAR(30) NOT NULL, overdraft_limit NUMERIC(10, 2) DEFAULT NULL, interest_rate NUMERIC(5, 2) DEFAULT NULL, credit_limit NUMERIC(10, 2) DEFAULT NULL, statement_day SMALLINT DEFAULT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE INDEX IDX_CAC89EAC7E3C61F9 ON accounts (owner_id)');
         $this->addSql('CREATE TABLE advisor_assignments (assigned_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, id UUID NOT NULL, advisor_id UUID NOT NULL, client_id UUID NOT NULL, PRIMARY KEY (id))');
@@ -82,7 +79,6 @@ final class Version20260706074629 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE accounts DROP CONSTRAINT FK_CAC89EAC7E3C61F9');
         $this->addSql('ALTER TABLE advisor_assignments DROP CONSTRAINT FK_AF9D50F666D3AD77');
         $this->addSql('ALTER TABLE advisor_assignments DROP CONSTRAINT FK_AF9D50F619EB6921');
