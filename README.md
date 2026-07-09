@@ -1,5 +1,22 @@
 # Gestion Argent Personnel
 
+## Contributeurs
+
+| Nom Prénom | Pseudo GitHub |
+|---|---|
+| AGEAT JAMLY Amir | [amirAgeatJ](https://github.com/amirAgeatJ) |
+
+## Démo en ligne
+
+Application déployée (Clever Cloud) : https://app-3e15c4b2-7be7-45a6-8380-ff56d749be52.cleverapps.io/
+
+Comptes de test :
+
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| Administrateur | `admin@admin.com` | `admin123` |
+| Conseiller | `conseiller11@test.fr` | `conseiller123` |
+
 Application de gestion de finances personnelles (comptes bancaires, transactions, budgets,
 objectifs d'épargne, conseillers) — projet de fin de cycle Symfony.
 

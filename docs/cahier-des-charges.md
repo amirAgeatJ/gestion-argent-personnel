@@ -82,9 +82,3 @@ cycle "Conception et développement d'une application Web d'envergure avec Symfo
 - Tests : 4 tests unitaires (`tests/Unit/Security/Voter/AccountVoterTest.php`) et 4 tests
   fonctionnels (`tests/Functional/AccessControlTest.php`).
 - Déploiement : Clever Cloud (voir [README](../README.md#déploiement)).
-
-### 7. Bonus envisagés
-- `AuditLogSubscriber` : traçabilité automatique (création/modification/suppression) des
-  comptes et transactions — déjà implémenté.
-- Pistes non retenues faute de temps : Mercure (temps réel), Messenger asynchrone réel,
-  commandes CLI dédiées, Infection PHP, approche DDD/TDD stricte.
